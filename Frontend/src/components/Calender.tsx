@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchHolidays, addHoliday } from "../api/api";
 
+interface Holiday {
+  date: string;
+  title: string;
+}
+
 const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [holidays, setHolidays] = useState([]);
-  const [hoveredDate, setHoveredDate] = useState(null);
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [holidays, setHolidays] = useState<Holiday[]>([]);
+  const [hoveredDate, setHoveredDate] = useState<string | null>(null);
 
   const minYear = 2024;
   const maxYear = 2029;
@@ -14,15 +19,14 @@ const Calendar = () => {
   }, [currentDate]);
 
   const loadHolidays = async () => {
-    const data = await fetchHolidays();
+    const data: Holiday[] = await fetchHolidays();
     setHolidays(data);
   };
 
-  const handleAddHoliday = async (date) => {
+  const handleAddHoliday = async (date: string) => {
     const name = prompt("Enter holiday name:");
     if (name) {
       await addHoliday({ date, title: name });
-
       await loadHolidays(); // Refresh the holiday list after adding
     }
   };
@@ -43,7 +47,7 @@ const Calendar = () => {
     }
   };
 
-  const formatDateString = (year, month, day) => {
+  const formatDateString = (year: number, month: number, day: number): string => {
     return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   };
 
@@ -65,35 +69,34 @@ const Calendar = () => {
           week.push(<td key={`empty-end-${j}`}></td>);
         } else {
           const dateStr = formatDateString(year, month, day);
-          const isHoliday = (holidays || []).some((holiday) => holiday.date === dateStr);
-
+          const isHoliday = holidays.some((holiday) => holiday.date === dateStr);
           const isHovered = hoveredDate === dateStr;
 
           week.push(
             <td
               key={dateStr}
-              style={{ 
-                position: 'relative', 
-                padding: '8px',
-                border: '1px solid #ddd'
+              style={{
+                position: "relative",
+                padding: "8px",
+                border: "1px solid #ddd",
               }}
               onMouseEnter={() => setHoveredDate(dateStr)}
               onMouseLeave={() => setHoveredDate(null)}
             >
               {day}
-              {isHoliday && <div style={{ color: 'blue', fontSize: '12px' }}>Holiday</div>}
+              {isHoliday && <div style={{ color: "blue", fontSize: "12px" }}>Holiday</div>}
               {isHovered && (
                 <button
                   onClick={() => handleAddHoliday(dateStr)}
                   style={{
-                    position: 'absolute',
-                    bottom: '2px',
-                    right: '2px',
-                    padding: '2px 6px',
-                    fontSize: '12px',
-                    backgroundColor: '#000000',
-                    border: '1px solid #ddd',
-                    cursor: 'pointer'
+                    position: "absolute",
+                    bottom: "2px",
+                    right: "2px",
+                    padding: "2px 6px",
+                    fontSize: "12px",
+                    backgroundColor: "#000000",
+                    border: "1px solid #ddd",
+                    cursor: "pointer",
                   }}
                 >
                   Add
@@ -111,28 +114,20 @@ const Calendar = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <button 
-          onClick={handlePrevMonth}
-          disabled={currentDate.getFullYear() <= minYear && currentDate.getMonth() === 0}
-        >
+      <div style={{ marginBottom: "10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <button onClick={handlePrevMonth} disabled={currentDate.getFullYear() <= minYear && currentDate.getMonth() === 0}>
           Previous
         </button>
-        <div>
-          {currentDate.toLocaleString("default", { month: "long" })} {currentDate.getFullYear()}
-        </div>
-        <button 
-          onClick={handleNextMonth}
-          disabled={currentDate.getFullYear() >= maxYear && currentDate.getMonth() === 11}
-        >
+        <div>{currentDate.toLocaleString("default", { month: "long" })} {currentDate.getFullYear()}</div>
+        <button onClick={handleNextMonth} disabled={currentDate.getFullYear() >= maxYear && currentDate.getMonth() === 11}>
           Next
         </button>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr>
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <th key={day} style={{ padding: '8px', border: '1px solid #ddd' }}>
+              <th key={day} style={{ padding: "8px", border: "1px solid #ddd" }}>
                 {day}
               </th>
             ))}

@@ -1,0 +1,41 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day {
+  padding: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.holiday {
+  background-color: lightcoral;
+  color: white;
+}
+
+button {
+  margin-top: 5px;
+  padding: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}

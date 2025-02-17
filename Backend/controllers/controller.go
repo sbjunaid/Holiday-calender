@@ -21,20 +21,20 @@ var holidayCollection *mongo.Collection
 // Initialize the collection AFTER the database connection is established
 func InitHolidayController() {
 	if config.DB == nil {
-		log.Fatal("❌ Database connection is nil. Ensure ConnectDB() is called before initializing controllers.")
+		log.Fatal(" Database connection is nil. Ensure ConnectDB() is called before initializing controllers.")
 	}
 	holidayCollection = config.DB.Collection("holidays")
-	fmt.Println("✅ Holiday collection initialized")
+	fmt.Println(" Holiday collection initialized")
 }
 
-// ✅ Fetch holidays (GET /api/holidays)
+// Fetch holidays (GET /api/holidays)
 func GetHolidays(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("📌 Received GET request for holidays")
+	fmt.Println(" Received GET request for holidays")
 
 	// Query all holidays
 	cursor, err := holidayCollection.Find(context.TODO(), bson.M{})
 	if err != nil {
-		log.Println("❌ Error fetching holidays:", err)
+		log.Println(" Error fetching holidays:", err)
 		http.Error(w, "Error fetching holidays", http.StatusInternalServerError)
 		return
 	}
@@ -44,27 +44,27 @@ func GetHolidays(w http.ResponseWriter, r *http.Request) {
 	for cursor.Next(context.TODO()) {
 		var holiday models.Holiday
 		if err := cursor.Decode(&holiday); err != nil {
-			log.Println("❌ Error decoding holiday:", err)
+			log.Println(" Error decoding holiday:", err)
 			continue
 		}
 		holidays = append(holidays, holiday)
 	}
 
 	// Log what we fetched
-	fmt.Println("✅ Holidays fetched:", holidays)
+	fmt.Println(" Holidays fetched:", holidays)
 
 	// Send JSON response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(holidays)
 }
 
-// ✅ Add holiday (POST /api/holidays)
+// Add holiday (POST /api/holidays)
 func AddHoliday(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("📌 Received POST request to add holiday")
+	fmt.Println(" Received POST request to add holiday")
 
 	var holiday models.Holiday
 	if err := json.NewDecoder(r.Body).Decode(&holiday); err != nil {
-		log.Println("❌ Error decoding request body:", err)
+		log.Println(" Error decoding request body:", err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
@@ -73,7 +73,7 @@ func AddHoliday(w http.ResponseWriter, r *http.Request) {
 	holiday.ID = primitive.NewObjectID()
 	result, err := holidayCollection.InsertOne(context.TODO(), holiday)
 	if err != nil {
-		log.Println("❌ Could not insert holiday:", err)
+		log.Println(" Could not insert holiday:", err)
 		http.Error(w, "Could not add holiday", http.StatusInternalServerError)
 		return
 	}
@@ -86,17 +86,17 @@ func AddHoliday(w http.ResponseWriter, r *http.Request) {
 		"id":      result.InsertedID,
 	})
 
-	fmt.Println("✅ Holiday added:", holiday)
+	fmt.Println(" Holiday added:", holiday)
 }
 
-// ✅ Delete holiday (DELETE /api/holidays/{id})
+// Delete holiday (DELETE /api/holidays/{id})
 func DeleteHoliday(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("📌 Received DELETE request for a holiday")
+	fmt.Println(" Received DELETE request for a holiday")
 
 	params := mux.Vars(r)
 	holidayID, err := primitive.ObjectIDFromHex(params["id"])
 	if err != nil {
-		log.Println("❌ Invalid holiday ID:", err)
+		log.Println(" Invalid holiday ID:", err)
 		http.Error(w, "Invalid ID format", http.StatusBadRequest)
 		return
 	}
@@ -104,7 +104,7 @@ func DeleteHoliday(w http.ResponseWriter, r *http.Request) {
 	// Delete the holiday
 	result, err := holidayCollection.DeleteOne(context.TODO(), bson.M{"_id": holidayID})
 	if err != nil {
-		log.Println("❌ Could not delete holiday:", err)
+		log.Println(" Could not delete holiday:", err)
 		http.Error(w, "Could not delete holiday", http.StatusInternalServerError)
 		return
 	}
@@ -120,5 +120,5 @@ func DeleteHoliday(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Holiday deleted successfully"})
 
-	fmt.Println("✅ Holiday deleted:", holidayID)
+	fmt.Println(" Holiday deleted:", holidayID)
 }

@@ -20,7 +20,7 @@ func main() {
 	router := mux.NewRouter()
 	routes.RegisterHolidayRoutes(router)
 
-	// ✅ Global CORS Middleware (Allow Frontend to Communicate)
+	// Global CORS Middleware (Allow Frontend to Communicate)
 	corsHandler := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://a16fc0ec.holiday-app.pages.dev"}, 
 		AllowedMethods:   []string{"GET", "POST", "DELETE", "OPTIONS"},
@@ -29,7 +29,7 @@ func main() {
 		Debug:            true, 
 	})
 
-	// ✅ Wrap router with CORS middleware
+	//Wrap router with CORS middleware
 	handler := corsHandler.Handler(router)
 
 	fmt.Println("Server started on port 8081")

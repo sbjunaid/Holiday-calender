@@ -48,12 +48,12 @@ Two things almost made me lose my mind:
 ## 🔗 Resources That Saved My Life 
 - **Stack Overflow (Endless debugging)**  
 - **Postman (Testing APIs like a boss)**  
-- Google, because where else would I go? 😂  
+- **Google**, because where else would I go? 😂  
 
 ---
 
 ## 🍽️ Fun Fact
-I was so focused on debugging that I **skipped breakfast**. The moment this project finally worked... **pure happiness**. 🤩  
+This project made me realise sometimes debugging can make you happy. ... **pure happiness**. 🤩  
 
 ---
 

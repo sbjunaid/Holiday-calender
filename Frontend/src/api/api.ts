@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8081/api/holidays";
+const API_BASE_URL = "https://holiday-calender-production.up.railway.app";
 
 export const fetchHolidays = async () => {
   try {

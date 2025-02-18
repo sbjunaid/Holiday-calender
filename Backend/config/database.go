@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,12 +14,16 @@ import (
 var DB *mongo.Database
 
 func ConnectDB() {
-	uri := "mongodb+srv://brook1hire:W8BK7mpH00VSTOZi@cluster0.5vhy6.mongodb.net/"
+	// Get MongoDB URI from environment variable
+	uri := os.Getenv("MONGO_URI")
+	if uri == "" {
+		log.Fatal(" MONGO_URI environment variable is not set")
+	}
 
 	clientOptions := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		log.Fatal("Error connecting to MongoDB:", err)
+		log.Fatal(" Error connecting to MongoDB:", err)
 	}
 
 	// Ping the database to ensure connection is successful
@@ -26,15 +31,15 @@ func ConnectDB() {
 	defer cancel()
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatal("MongoDB ping failed:", err)
+		log.Fatal(" MongoDB ping failed:", err)
 	}
 
-	fmt.Println("Connected to MongoDB!")
+	fmt.Println(" Connected to MongoDB!")
 
 	// Assign database (make sure this name matches your MongoDB database name)
 	DB = client.Database("holidayDB")
 
 	if DB == nil {
-		log.Fatal("Database connection is nil!")
+		log.Fatal(" Database connection is nil!")
 	}
 }

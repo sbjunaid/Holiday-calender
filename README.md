@@ -12,7 +12,8 @@ Built with **React (Frontend)** and **Go (Backend)**, using **MongoDB (Atlas)** 
 
 ## 🛠️ Tech Stack
 - **Frontend**: React (TypeScript)  
-- **Backend**: Go (Gorilla Mux)  
+- **Backend**: Go (Gorilla Mux)
+- **UI**: Tailwind CSS
 - **Database**: MongoDB Atlas (NoSQL)  
 - **Deployment**: Cloudflare Pages (Frontend) & Railway (Backend)  
 

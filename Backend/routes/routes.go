@@ -19,7 +19,7 @@ func RegisterHolidayRoutes(router *mux.Router) {
 // Inline CORS middleware for simplicity
 func corsMiddleware(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Access-Control-Allow-Origin", "https://holiday-viewer.pages.dev")
+        w.Header().Set("Access-Control-Allow-Origin", "https://holiday-assignment.pages.dev")
         w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
         w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin, Accept")
         if r.Method == "OPTIONS" {

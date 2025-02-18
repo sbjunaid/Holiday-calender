@@ -22,7 +22,7 @@ func main() {
 
 	// CORS Middleware (Allow Frontend to Communicate)
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"https://1cb843b4.holiday-app.pages.dev"}, // Allow requests from React app
+		AllowedOrigins:   []string{"*"}, // Allow requests from React app
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,

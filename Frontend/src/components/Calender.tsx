@@ -16,17 +16,24 @@ const Calendar = () => {
   }, []);
 
   const loadHolidays = async () => {
-    const data = await fetchHolidays();
-    setHolidays(data);
+    try {
+      const data = await fetchHolidays();
+      console.log("Fetched holidays:", data);
+      setHolidays(data);
+    } catch (error) {
+      console.error("Failed to fetch holidays", error);
+    }
   };
 
   const handleAddHoliday = async (date: string) => {
     const name = prompt("Enter holiday name:");
     if (name) {
-      const newHoliday = { date, title: name };
-      setHolidays([...holidays, newHoliday]);
-      await addHoliday(newHoliday);
-      
+      try {
+        await addHoliday({ date, title: name });
+        loadHolidays(); // Refresh from backend after adding
+      } catch (error) {
+        console.error("Failed to add holiday", error);
+      }
     }
   };
 
@@ -41,6 +48,7 @@ const Calendar = () => {
   };
 
   const generateDays = () => {
+    console.log("Current holidays:", holidays);
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();

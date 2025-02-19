@@ -1,4 +1,4 @@
- import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchHolidays, addHoliday } from "../api/api";
 
 interface Holiday {
@@ -24,9 +24,8 @@ const Calendar = () => {
     const name = prompt("Enter holiday name:");
     if (name) {
       const newHoliday = { date, title: name };
-      setHolidays([...holidays, newHoliday]);
       await addHoliday(newHoliday);
-      
+      loadHolidays();
     }
   };
 
@@ -58,7 +57,7 @@ const Calendar = () => {
       return (
         <div
           key={dateStr}
-          className={day ${holiday ? "holiday-day" : ""}}
+          className={`day ${holiday ? "holiday-day" : ""}`}
           onMouseEnter={() => setHoveredDate(dateStr)}
           onMouseLeave={() => setHoveredDate(null)}
           style={{ width: "50px", height: "50px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", border: "1px solid #ccc", position: "relative" }}

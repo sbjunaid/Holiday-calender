@@ -16,24 +16,17 @@ const Calendar = () => {
   }, []);
 
   const loadHolidays = async () => {
-    try {
-      const data = await fetchHolidays();
-      console.log("Fetched holidays:", data);
-      setHolidays(data);
-    } catch (error) {
-      console.error("Failed to fetch holidays", error);
-    }
+    const data = await fetchHolidays();
+    setHolidays(data);
   };
 
   const handleAddHoliday = async (date: string) => {
     const name = prompt("Enter holiday name:");
     if (name) {
-      try {
-        await addHoliday({ date, title: name });
-        loadHolidays(); // Refresh from backend after adding
-      } catch (error) {
-        console.error("Failed to add holiday", error);
-      }
+      const newHoliday = { date, title: name };
+      setHolidays([...holidays, newHoliday]);
+      await addHoliday(newHoliday);
+      
     }
   };
 
@@ -48,7 +41,6 @@ const Calendar = () => {
   };
 
   const generateDays = () => {
-    console.log("Current holidays:", holidays);
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -66,7 +58,7 @@ const Calendar = () => {
       return (
         <div
           key={dateStr}
-          className={`day ${holiday ? "holiday-day" : ""}`}
+          className={day ${holiday ? "holiday-day" : ""}}
           onMouseEnter={() => setHoveredDate(dateStr)}
           onMouseLeave={() => setHoveredDate(null)}
           style={{ width: "50px", height: "50px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", border: "1px solid #ccc", position: "relative" }}

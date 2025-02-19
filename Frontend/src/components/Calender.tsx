@@ -23,8 +23,9 @@ const Calendar = () => {
   const handleAddHoliday = async (date: string) => {
     const name = prompt("Enter holiday name:");
     if (name) {
-      await addHoliday({ date, title: name });
-      await loadHolidays();
+      const newHoliday = { date, title: name };
+      setHolidays([...holidays, newHoliday]);
+      await addHoliday(newHoliday);
     }
   };
 
@@ -59,11 +60,12 @@ const Calendar = () => {
           className={`day ${holiday ? "holiday-day" : ""}`}
           onMouseEnter={() => setHoveredDate(dateStr)}
           onMouseLeave={() => setHoveredDate(null)}
+          style={{ width: "50px", height: "50px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", border: "1px solid #ccc", position: "relative" }}
         >
           <span>{date.getDate()}</span>
-          {holiday && <div className="holiday-label">{holiday.title}</div>}
+          {holiday && <div className="holiday-label" style={{ fontSize: "10px", color: "red" }}>{holiday.title}</div>}
           {hoveredDate === dateStr && (
-            <button className="add-btn" onClick={() => handleAddHoliday(dateStr)}>+</button>
+            <button className="add-btn" onClick={() => handleAddHoliday(dateStr)} style={{ position: "absolute", bottom: "5px", fontSize: "10px", padding: "3px" }}>Add</button>
           )}
         </div>
       );
@@ -77,7 +79,7 @@ const Calendar = () => {
         <h2>{currentDate.toLocaleString("default", { month: "long", year: "numeric" })}</h2>
         <button onClick={() => handleMonthChange(1)}>Next</button>
       </div>
-      <div className="calendar-grid">{generateDays()}</div>
+      <div className="calendar-grid" style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "5px" }}>{generateDays()}</div>
     </div>
   );
 };

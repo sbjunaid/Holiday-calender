@@ -26,6 +26,7 @@ const Calendar = () => {
       const newHoliday = { date, title: name };
       setHolidays([...holidays, newHoliday]);
       await addHoliday(newHoliday);
+      loadHolidays();
     }
   };
 
